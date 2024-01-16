@@ -1,25 +1,18 @@
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Robot {
-
-	private int countParts = 0;
-	private final Map<Component, Boolean> components = new HashMap<>();
+	private final Set<Component> components = new HashSet<>();
 
 	public Robot() {
-		Arrays.stream(Component.values()).forEach(comp -> components.put(comp, false));
+
 	}
 
-	public void addOneToCountParts() {
-		countParts++;
+	public boolean addComponent(Component component){
+		return components.add(component);
 	}
 
-	public int getCountParts() {
-		return countParts;
+	public int getCountComponents(){
+		return components.size();
 	}
 
-	public Map<Component, Boolean> getComponents() {
-		return components;
-	}
 }

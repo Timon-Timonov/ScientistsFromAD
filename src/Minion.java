@@ -1,25 +1,23 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class Minion extends Thread {
 
 	private final List<Component> backpack = new ArrayList<>();
 	private final Laboratory linkedLaboratory;
-	private Random random = new Random();
 	private int currentNight = 0;
-	private int countOfPartToTakeTonight;
+	private int countOfPartToTakeToNight;
 	private boolean nightWorkIsExecute = false;
 
 	public Minion(Laboratory laboratory) {
 		this.linkedLaboratory = laboratory;
-		setCountOfPartToTakeTonight();
+		setCountOfPartToTakeToNight();
 	}
 
 	@Override
 	public void run() {
 
-		this.setName(linkedLaboratory.getFactoryName() + " minionThread");
+		this.setName(linkedLaboratory.getLaboratoryName() + " minionThread");
 		//System.out.println(Thread.currentThread().getName() + " start.");
 		JunkYard junkYardThr = JunkYard.getInstance();
 
@@ -27,7 +25,7 @@ public class Minion extends Thread {
 			if (junkYardThr.isOpenState()) {
 				if (junkYardThr.getCurrentNight() == currentNight) {
 					if (!nightWorkIsExecute) {
-						for (int i = 0; i < countOfPartToTakeTonight; i++) {
+						for (int i = 0; i < countOfPartToTakeToNight; i++) {
 							if (junkYardThr.isOpenState() && junkYardThr.getCurrentNight() == currentNight) {
 								try {
 									backpack.add(junkYardThr.pickUpComponent());
@@ -42,13 +40,13 @@ public class Minion extends Thread {
 				} else {
 					currentNight++;
 					nightWorkIsExecute = false;
-					setCountOfPartToTakeTonight();
+					setCountOfPartToTakeToNight();
 					putComponentsToLab();
 				}
 			}
 		}
 		putComponentsToLab();
-		//System.out.println(Thread.currentThread().getName() + " finish.");
+		System.out.println(Thread.currentThread().getName() + " finish.");
 	}
 
 	private void putComponentsToLab() {
@@ -56,8 +54,8 @@ public class Minion extends Thread {
 		backpack.clear();
 	}
 
-	private void setCountOfPartToTakeTonight() {
-		countOfPartToTakeTonight = random.nextInt(ConstValues.MAX_COUNT_OF_NEW_COMPONENTS_EVERY_NIGHT_SERVANT
+	private void setCountOfPartToTakeToNight() {
+		countOfPartToTakeToNight = ConstValues.RANDOM.nextInt(ConstValues.MAX_COUNT_OF_NEW_COMPONENTS_EVERY_NIGHT_SERVANT
 				- ConstValues.MIN_COUNT_OF_NEW_COMPONENTS_EVERY_NIGHT_SERVANT + 1)
 				+ ConstValues.MIN_COUNT_OF_NEW_COMPONENTS_EVERY_NIGHT_SERVANT;
 	}

@@ -1,4 +1,8 @@
+import java.util.Random;
+
 public class ConstValues {
+
+	public static final Random RANDOM = new Random();
 
 	public static final int COUNT_OF_LABORATORIES = 2;
 	public static final String LABORATORY_NAME = "Laboratory";

@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Run {
@@ -26,24 +25,22 @@ public class Run {
 
 	private static void checkAndPrintResults(List<Laboratory> laboratories) {
 
-		FactoryPrinter output = (o) -> System.out.println(o.getFactoryName() + " - " + o.getCountRobots());
+		LaboratoryPrinter output = (o) -> System.out.println(o.getLaboratoryName() + " - " + o.getCountRobots());
 
 		int maxCountRobots = laboratories.stream()
 				.max(Laboratory::compareTo).get().getCountRobots();
 
+		//int maxCountRobots1 = laboratories.stream().map(Laboratory::getCountRobots)
+		//		.max(Integer::compareTo).orElse(-1);
+
 		if (maxCountRobots == 0) {
 			System.out.print("GameDraw. All are losers: ");
-			laboratories.forEach(output::printResult);
-
 		} else {
 			List<Laboratory> winners = laboratories.stream()
 					.filter(lab -> lab.getCountRobots() == maxCountRobots)
-					.collect(Collectors.toList());
-
+					.toList();
 			if (winners.size() == laboratories.size()) {
-				System.out.print("GameDraw. All are winners: ");
-				laboratories.forEach(output::printResult);
-
+				System.out.println("GameDraw. All are winners: ");
 			} else {
 				System.out.println("Winner(s): ");
 				winners.forEach(output::printResult);
@@ -51,9 +48,10 @@ public class Run {
 
 				System.out.println("Loser(s): ");
 				laboratories.removeAll(winners);
-				laboratories.forEach(output::printResult);
 			}
+
 		}
+		laboratories.forEach(output::printResult);
 	}
 }
 

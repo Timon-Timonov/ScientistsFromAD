@@ -1,4 +1,4 @@
 @FunctionalInterface
-interface FactoryPrinter {
+interface LaboratoryPrinter {
 	void printResult(Laboratory laboratory);
 }

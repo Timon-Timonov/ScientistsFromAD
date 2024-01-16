@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class Scientist extends Thread {
 
@@ -12,46 +11,48 @@ public class Scientist extends Thread {
 		this.linkedLaboratory = laboratory;
 	}
 
+	private void waitToNextNight(){
+		try {
+			Thread.sleep(ConstValues.DAY_TIME_SWAP_TIME);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	@Override
 	public void run() {
-		this.setName(linkedLaboratory.getFactoryName() + " scientistThread");
+		this.setName(linkedLaboratory.getLaboratoryName() + " scientistThread");
 		//System.out.println(Thread.currentThread().getName() + " start.");
 		JunkYard junkYardThr = JunkYard.getInstance();
 		robotsQueue.add(new Robot());
 
 		while (junkYardThr.getState() != State.TERMINATED) {
 
-			try {
-				Thread.sleep(ConstValues.DAY_TIME_SWAP_TIME);
-			} catch (InterruptedException e) {
-				throw new RuntimeException(e);
-			}
+			waitToNextNight();
 
-			int iter = 0;
-			List<Component> components = new ArrayList<>(linkedLaboratory.getStock());
+			List<Component> components = new ArrayList<>(linkedLaboratory.getStash());
 
 			for (Component component : components) {
 
+				int iter = 0;
+
 				while (true) {
-
 					try {
-
-						if (robotsQueue.get(iter).getCountParts() != Component.values().length) {
-							Map<Component, Boolean> map = robotsQueue.get(iter).getComponents();
-							if (!map.get(component)) {
-								map.put(component, true);
-								robotsQueue.get(iter).addOneToCountParts();
-								break;
-							} else iter++;
-						} else {
-							robotCreatedCounter++;
-							robotsQueue.remove(iter);
+						if (!robotsQueue.get(iter).addComponent(component)) {
+							iter++;
 						}
-					} catch (IndexOutOfBoundsException e) {
+						else {
+							if (robotsQueue.get(iter).getCountComponents() == Component.values().length){
+								robotsQueue.remove(iter);
+								robotCreatedCounter++;
+							}
+							break;
+						}
+					}catch (IndexOutOfBoundsException e){
 						robotsQueue.add(new Robot());
 					}
 				}
-				iter = 0;
+
 			}
 			linkedLaboratory.setCountRobots(robotCreatedCounter);
 		}

@@ -4,12 +4,13 @@ import java.util.List;
 
 public class Laboratory implements Comparable<Laboratory> {
 
-	private final String factoryName;
+	private final String laboratoryName;
 	private Integer countRobots = 0;
-	private final List<Component> stock = new ArrayList<>();
+	private final List<Component> stash = new ArrayList<>();
 
-	public Laboratory(String factoryName) {
-		this.factoryName = factoryName;
+
+	public Laboratory(String name) {
+		this.laboratoryName = name;
 
 		Minion minionThr = new Minion(this);
 		minionThr.start();
@@ -18,8 +19,8 @@ public class Laboratory implements Comparable<Laboratory> {
 		scientistThr.start();
 	}
 
-	public String getFactoryName() {
-		return factoryName;
+	public String getLaboratoryName() {
+		return laboratoryName;
 	}
 
 	public int getCountRobots() {
@@ -30,14 +31,14 @@ public class Laboratory implements Comparable<Laboratory> {
 		this.countRobots = countRobots;
 	}
 
-	public synchronized List<Component> getStock() {
-		List<Component> temp = new ArrayList<>(stock);
-		stock.clear();
+	public synchronized List<Component> getStash() {
+		List<Component> temp = new ArrayList<>(stash);
+		stash.clear();
 		return temp;
 	}
 
 	public synchronized void putComponents(List<Component> components) {
-		this.stock.addAll(components);
+		this.stash.addAll(components);
 
 	}
 

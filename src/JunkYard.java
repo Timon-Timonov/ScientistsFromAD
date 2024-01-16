@@ -4,7 +4,6 @@ public class JunkYard extends Thread {
 
 	private static JunkYard instance = null;
 	private Factory factory = new Factory();
-	private final Random random = new Random();
 	private final List<Component> components = new ArrayList<>();
 	private boolean openState = false;
 	private final List<Laboratory> laboratories = new ArrayList<>();
@@ -68,7 +67,7 @@ public class JunkYard extends Thread {
 
 		try {
 			synchronized (this.components) {
-				int index = random.nextInt(components.size());
+				int index = ConstValues.RANDOM.nextInt(components.size());
 				return components.remove(index);
 			}
 		} catch (IllegalArgumentException e) {
@@ -78,7 +77,7 @@ public class JunkYard extends Thread {
 
 	private void refreshComponents() {
 
-		int rnd = random.nextInt(ConstValues.MAX_COUNT_OF_NEW_COMPONENTS_EVERY_NIGHT_DUMP
+		int rnd = ConstValues.RANDOM.nextInt(ConstValues.MAX_COUNT_OF_NEW_COMPONENTS_EVERY_NIGHT_DUMP
 				- ConstValues.MIN_COUNT_OF_NEW_COMPONENTS_EVERY_NIGHT_DUMP + 1)
 				+ ConstValues.MIN_COUNT_OF_NEW_COMPONENTS_EVERY_NIGHT_DUMP;
 
