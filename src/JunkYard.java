@@ -10,7 +10,7 @@ public class JunkYard extends Thread {
 	private int currentNight = 1;
 
 	private JunkYard() {
-		this.setName(ConstValues.JUNK_YARD);
+		this.setName(ConstValues.JUNK_YARD_NAME);
 	}
 
 	public synchronized static JunkYard getInstance() {
@@ -68,9 +68,9 @@ public class JunkYard extends Thread {
 
 	private synchronized void refreshComponents() {
 
-		int rnd = ConstValues.RANDOM.nextInt(ConstValues.MAX_COUNT_OF_NEW_COMPONENTS_EVERY_NIGHT_JUNK_YARD
-				- ConstValues.MIN_COUNT_OF_NEW_COMPONENTS_EVERY_NIGHT_JUNK_YARD + 1)
-				+ ConstValues.MIN_COUNT_OF_NEW_COMPONENTS_EVERY_NIGHT_JUNK_YARD;
+		int rnd = ConstValues.RANDOM.nextInt(ConstValues.MAX_COUNT_OF_COMPONENTS_EVERY_NIGHT_JUNK_YARD
+				- ConstValues.MIN_COUNT_OF_COMPONENTS_EVERY_NIGHT_JUNK_YARD + 1)
+				+ ConstValues.MIN_COUNT_OF_COMPONENTS_EVERY_NIGHT_JUNK_YARD;
 		IntStream.range(0, rnd).forEach(i -> acceptDiscardedComponent());
 	}
 

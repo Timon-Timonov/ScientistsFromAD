@@ -15,6 +15,7 @@ public class Laboratory implements Comparable<Laboratory> {
 
 		Scientist scientistThr = new Scientist(this);
 		scientistThr.start();
+
 	}
 
 	public String getLaboratoryName() {

@@ -7,12 +7,12 @@ public class Minion extends Thread {
 	private final Laboratory linkedLaboratory;
 	private final JunkYard junkYardThr = JunkYard.getInstance();
 	private int currentNight = 1;
-	private int countOfPartToTakeToNight;
+	private int countOfPartToTakeThatNight;
 	private boolean nightWorkIsExecute = false;
 
 	public Minion(Laboratory laboratory) {
 		this.linkedLaboratory = laboratory;
-		this.setName(linkedLaboratory.getLaboratoryName() + ConstValues.MINION);
+		this.setName(linkedLaboratory.getLaboratoryName() + ConstValues.MINION_NAME);
 		setCountOfPartToTakeToNight();
 	}
 
@@ -23,8 +23,12 @@ public class Minion extends Thread {
 		while (junkYardThr.getState() != State.TERMINATED) {
 			if (junkYardThr.isOpenState()) {
 				if (junkYardThr.getCurrentNight() == currentNight) {
-					if (!nightWorkIsExecute) doEveryNightWork();
-				} else doEveryDayWork();
+					if (!nightWorkIsExecute) {
+						doEveryNightWork();
+					}
+				} else {
+					doEveryDayWork();
+				}
 			}
 		}
 		putComponentsToLab();
@@ -33,7 +37,7 @@ public class Minion extends Thread {
 
 	private void doEveryNightWork() {
 
-		for (int i = 0; i < countOfPartToTakeToNight; i++) {
+		for (int i = 0; i < countOfPartToTakeThatNight; i++) {
 			if (junkYardThr.isOpenState() && junkYardThr.getCurrentNight() == currentNight) {
 				Component component = junkYardThr.pickUpComponent();
 				if (component != null) {
@@ -59,7 +63,7 @@ public class Minion extends Thread {
 	}
 
 	private void setCountOfPartToTakeToNight() {
-		countOfPartToTakeToNight = ConstValues.RANDOM.nextInt(ConstValues.MAX_COUNT_OF_TAKEN_COMPONENTS_EVERY_NIGHT_MINION
+		countOfPartToTakeThatNight = ConstValues.RANDOM.nextInt(ConstValues.MAX_COUNT_OF_TAKEN_COMPONENTS_EVERY_NIGHT_MINION
 				- ConstValues.MIN_COUNT_OF_TAKEN_COMPONENTS_EVERY_NIGHT_MINION + 1)
 				+ ConstValues.MIN_COUNT_OF_TAKEN_COMPONENTS_EVERY_NIGHT_MINION;
 	}

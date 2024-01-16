@@ -17,6 +17,8 @@ public class Run {
 		junkYardThr.start();
 		junkYardThr.join();
 
+		//Thread.sleep(ConstValues.DAY_TIME_SWAP);
+
 		checkAndPrintResults(laboratories);
 		//System.out.println(Thread.currentThread().getName()+ " finish ");
 	}
