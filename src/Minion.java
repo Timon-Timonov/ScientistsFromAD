@@ -5,48 +5,52 @@ public class Minion extends Thread {
 
 	private final List<Component> backpack = new ArrayList<>();
 	private final Laboratory linkedLaboratory;
-	private int currentNight = 0;
+	private final JunkYard junkYardThr = JunkYard.getInstance();
+	private int currentNight = 1;
 	private int countOfPartToTakeToNight;
 	private boolean nightWorkIsExecute = false;
 
 	public Minion(Laboratory laboratory) {
 		this.linkedLaboratory = laboratory;
+		this.setName(linkedLaboratory.getLaboratoryName() + ConstValues.MINION);
 		setCountOfPartToTakeToNight();
 	}
 
 	@Override
 	public void run() {
 
-		this.setName(linkedLaboratory.getLaboratoryName() + " minionThread");
 		//System.out.println(Thread.currentThread().getName() + " start.");
-		JunkYard junkYardThr = JunkYard.getInstance();
-
 		while (junkYardThr.getState() != State.TERMINATED) {
 			if (junkYardThr.isOpenState()) {
 				if (junkYardThr.getCurrentNight() == currentNight) {
-					if (!nightWorkIsExecute) {
-						for (int i = 0; i < countOfPartToTakeToNight; i++) {
-							if (junkYardThr.isOpenState() && junkYardThr.getCurrentNight() == currentNight) {
-								try {
-									backpack.add(junkYardThr.pickUpComponent());
-								} catch (Exceptions.ComponentsNotFound componentsNotFound) {
-									break;
-								}
-							} else break;
-						}
-						//System.out.println(Thread.currentThread().getName() + " night " + currentNight + " take from dump " + backpack.size());
-						nightWorkIsExecute = true;
-					}
-				} else {
-					currentNight++;
-					nightWorkIsExecute = false;
-					setCountOfPartToTakeToNight();
-					putComponentsToLab();
-				}
+					if (!nightWorkIsExecute) doEveryNightWork();
+				} else doEveryDayWork();
 			}
 		}
 		putComponentsToLab();
-		System.out.println(Thread.currentThread().getName() + " finish.");
+		//System.out.println(Thread.currentThread().getName() + " finish.");
+	}
+
+	private void doEveryNightWork() {
+
+		for (int i = 0; i < countOfPartToTakeToNight; i++) {
+			if (junkYardThr.isOpenState() && junkYardThr.getCurrentNight() == currentNight) {
+				Component component = junkYardThr.pickUpComponent();
+				if (component != null) {
+					backpack.add(component);
+				} else break;
+			} else break;
+		}
+		System.out.println(Thread.currentThread().getName() + " night "
+				+ currentNight + " take from junkyard " + backpack.size()+" part(s): " + backpack.toString());
+		nightWorkIsExecute = true;
+	}
+
+	private void doEveryDayWork() {
+		currentNight++;
+		nightWorkIsExecute = false;
+		setCountOfPartToTakeToNight();
+		putComponentsToLab();
 	}
 
 	private void putComponentsToLab() {
@@ -55,8 +59,8 @@ public class Minion extends Thread {
 	}
 
 	private void setCountOfPartToTakeToNight() {
-		countOfPartToTakeToNight = ConstValues.RANDOM.nextInt(ConstValues.MAX_COUNT_OF_NEW_COMPONENTS_EVERY_NIGHT_SERVANT
-				- ConstValues.MIN_COUNT_OF_NEW_COMPONENTS_EVERY_NIGHT_SERVANT + 1)
-				+ ConstValues.MIN_COUNT_OF_NEW_COMPONENTS_EVERY_NIGHT_SERVANT;
+		countOfPartToTakeToNight = ConstValues.RANDOM.nextInt(ConstValues.MAX_COUNT_OF_TAKEN_COMPONENTS_EVERY_NIGHT_MINION
+				- ConstValues.MIN_COUNT_OF_TAKEN_COMPONENTS_EVERY_NIGHT_MINION + 1)
+				+ ConstValues.MIN_COUNT_OF_TAKEN_COMPONENTS_EVERY_NIGHT_MINION;
 	}
 }

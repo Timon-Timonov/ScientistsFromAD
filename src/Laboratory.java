@@ -1,13 +1,11 @@
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class Laboratory implements Comparable<Laboratory> {
 
 	private final String laboratoryName;
 	private Integer countRobots = 0;
 	private final List<Component> stash = new ArrayList<>();
-
 
 	public Laboratory(String name) {
 		this.laboratoryName = name;
@@ -38,8 +36,7 @@ public class Laboratory implements Comparable<Laboratory> {
 	}
 
 	public synchronized void putComponents(List<Component> components) {
-		this.stash.addAll(components);
-
+		stash.addAll(components);
 	}
 
 	@Override

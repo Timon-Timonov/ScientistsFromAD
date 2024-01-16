@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Run {
@@ -12,10 +13,7 @@ public class Run {
 				.forEach(i -> laboratories
 						.add(new Laboratory(ConstValues.LABORATORY_NAME + (i + 1))));
 
-
 		JunkYard junkYardThr = JunkYard.getInstance();
-		junkYardThr.addLaboratories(laboratories);
-
 		junkYardThr.start();
 		junkYardThr.join();
 
@@ -24,6 +22,8 @@ public class Run {
 	}
 
 	private static void checkAndPrintResults(List<Laboratory> laboratories) {
+		System.out.println();
+		System.out.println("Results:");
 
 		LaboratoryPrinter output = (o) -> System.out.println(o.getLaboratoryName() + " - " + o.getCountRobots());
 
@@ -38,7 +38,7 @@ public class Run {
 		} else {
 			List<Laboratory> winners = laboratories.stream()
 					.filter(lab -> lab.getCountRobots() == maxCountRobots)
-					.toList();
+					.collect(Collectors.toList());
 			if (winners.size() == laboratories.size()) {
 				System.out.println("GameDraw. All are winners: ");
 			} else {
@@ -49,7 +49,6 @@ public class Run {
 				System.out.println("Loser(s): ");
 				laboratories.removeAll(winners);
 			}
-
 		}
 		laboratories.forEach(output::printResult);
 	}

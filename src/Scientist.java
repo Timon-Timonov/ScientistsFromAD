@@ -6,14 +6,18 @@ public class Scientist extends Thread {
 	private int robotCreatedCounter = 0;
 	private final List<Robot> robotsQueue = new ArrayList<>();
 	private final Laboratory linkedLaboratory;
+	private final JunkYard junkYardThr = JunkYard.getInstance();
 
 	public Scientist(Laboratory laboratory) {
+
 		this.linkedLaboratory = laboratory;
+		this.setName(linkedLaboratory.getLaboratoryName() + ConstValues.SCIENTIST);
+		robotsQueue.add(new Robot());
 	}
 
-	private void waitToNextNight(){
+	private void waitToNextNight() {
 		try {
-			Thread.sleep(ConstValues.DAY_TIME_SWAP_TIME);
+			Thread.sleep(ConstValues.DAY_TIME_SWAP);
 		} catch (InterruptedException e) {
 			throw new RuntimeException(e);
 		}
@@ -21,38 +25,33 @@ public class Scientist extends Thread {
 
 	@Override
 	public void run() {
-		this.setName(linkedLaboratory.getLaboratoryName() + " scientistThread");
-		//System.out.println(Thread.currentThread().getName() + " start.");
-		JunkYard junkYardThr = JunkYard.getInstance();
-		robotsQueue.add(new Robot());
 
+		//System.out.println(Thread.currentThread().getName() + " start.");
 		while (junkYardThr.getState() != State.TERMINATED) {
 
 			waitToNextNight();
+			List<Component> todayComponents = new ArrayList<>(linkedLaboratory.getStash());
 
-			List<Component> components = new ArrayList<>(linkedLaboratory.getStash());
-
-			for (Component component : components) {
+			for (Component component : todayComponents) {
 
 				int iter = 0;
-
 				while (true) {
 					try {
 						if (!robotsQueue.get(iter).addComponent(component)) {
 							iter++;
-						}
-						else {
-							if (robotsQueue.get(iter).getCountComponents() == Component.values().length){
+						} else {
+							if (robotsQueue.get(iter).getCountComponents() == Component.values().length) {
 								robotsQueue.remove(iter);
 								robotCreatedCounter++;
+								System.out.println(Thread.currentThread().getName() + " create "
+										+ robotCreatedCounter + "th robot.");
 							}
 							break;
 						}
-					}catch (IndexOutOfBoundsException e){
+					} catch (IndexOutOfBoundsException e) {
 						robotsQueue.add(new Robot());
 					}
 				}
-
 			}
 			linkedLaboratory.setCountRobots(robotCreatedCounter);
 		}
