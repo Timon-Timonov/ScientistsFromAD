@@ -3,7 +3,7 @@ import java.util.*;
 public class JunkYard extends Thread {
 
 	private static JunkYard instance = null;
-	private Factory factory = new Factory();
+	private final Factory factory = new Factory();
 	private final List<Component> components = new ArrayList<>();
 	private boolean openState = false;
 	private final List<Laboratory> laboratories = new ArrayList<>();
@@ -49,10 +49,6 @@ public class JunkYard extends Thread {
 
 	public void addLaboratories(List<Laboratory> laboratories) {
 		this.laboratories.addAll(laboratories);
-	}
-
-	public Laboratory getLaboratoryOnPos(int pos) throws IndexOutOfBoundsException {
-		return laboratories.get(pos);
 	}
 
 	private Component acceptDiscardedComponent() {
