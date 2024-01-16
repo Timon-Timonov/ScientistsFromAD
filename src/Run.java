@@ -1,3 +1,8 @@
+import Classes.JunkYard;
+import Classes.Laboratory;
+import Utils.ConstValues;
+import Utils.LaboratoryPrinter;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -30,7 +35,7 @@ public class Run {
 		int maxCountRobots = laboratories.stream()
 				.max(Laboratory::compareTo).get().getCountRobots();
 
-		//int maxCountRobots1 = laboratories.stream().map(Laboratory::getCountRobots)
+		//int maxCountRobots1 = laboratories.stream().map(Classes.Laboratory::getCountRobots)
 		//		.max(Integer::compareTo).orElse(-1);
 
 		if (maxCountRobots == 0) {

@@ -1,3 +1,9 @@
+package Classes;
+
+import Exceptions.ListExceptions;
+import Utils.Component;
+import Utils.ConstValues;
+
 import java.util.*;
 
 public class JunkYard extends Thread {
@@ -59,7 +65,7 @@ public class JunkYard extends Thread {
 		return openState;
 	}
 
-	public Component pickUpComponent() throws Exceptions.ComponentsNotFound {
+	public Component pickUpComponent() throws ListExceptions.ComponentsNotFound {
 
 		try {
 			synchronized (this.components) {
@@ -67,7 +73,7 @@ public class JunkYard extends Thread {
 				return components.remove(index);
 			}
 		} catch (IllegalArgumentException e) {
-			throw new Exceptions.ComponentsNotFound();
+			throw new ListExceptions.ComponentsNotFound();
 		}
 	}
 

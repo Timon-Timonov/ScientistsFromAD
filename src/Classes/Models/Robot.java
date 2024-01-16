@@ -1,3 +1,7 @@
+package Classes.Models;
+
+import Utils.Component;
+
 import java.util.*;
 
 public class Robot {

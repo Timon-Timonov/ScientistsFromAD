@@ -1,3 +1,10 @@
+package Classes;
+
+
+import Exceptions.ListExceptions;
+import Utils.Component;
+import Utils.ConstValues;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +36,7 @@ public class Minion extends Thread {
 							if (junkYardThr.isOpenState() && junkYardThr.getCurrentNight() == currentNight) {
 								try {
 									backpack.add(junkYardThr.pickUpComponent());
-								} catch (Exceptions.ComponentsNotFound componentsNotFound) {
+								} catch (ListExceptions.ComponentsNotFound componentsNotFound) {
 									break;
 								}
 							} else break;
