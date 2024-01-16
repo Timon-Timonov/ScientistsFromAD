@@ -1,3 +1,8 @@
+import Classess.JunkYard;
+import Classess.Laboratory;
+import Utils.ConstValues;
+import Utils.LaboratoryPrinter;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,7 +22,7 @@ public class Run {
 		junkYardThr.start();
 		junkYardThr.join();
 
-		//Thread.sleep(ConstValues.DAY_TIME_SWAP);
+		//Thread.sleep(Utils.ConstValues.DAY_TIME_SWAP);
 
 		checkAndPrintResults(laboratories);
 		//System.out.println(Thread.currentThread().getName()+ " finish ");
@@ -32,7 +37,7 @@ public class Run {
 		int maxCountRobots = laboratories.stream()
 				.max(Laboratory::compareTo).get().getCountRobots();
 
-		//int maxCountRobots1 = laboratories.stream().map(Laboratory::getCountRobots)
+		//int maxCountRobots1 = laboratories.stream().map(Classess.Laboratory::getCountRobots)
 		//		.max(Integer::compareTo).orElse(-1);
 
 		if (maxCountRobots == 0) {

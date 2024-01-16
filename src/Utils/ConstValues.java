@@ -1,3 +1,5 @@
+package Utils;
+
 import java.util.Random;
 
 public class ConstValues {
@@ -5,7 +7,7 @@ public class ConstValues {
 	public static final Random RANDOM = new Random();
 
 	public static final int COUNT_OF_LABORATORIES = 2;
-	public static final String LABORATORY_NAME = "Laboratory";
+	public static final String LABORATORY_NAME = "Classess.Laboratory";
 	public static final String JUNK_YARD_NAME = "Junkyard                ";
 	public static final String MINION_NAME = " minionThread";
 	public static final String SCIENTIST = " scientistThread";
