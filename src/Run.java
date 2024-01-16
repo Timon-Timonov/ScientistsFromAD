@@ -1,46 +1,59 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 public class Run {
 
 	public static void main(String[] args) throws InterruptedException {
 		//System.out.println(Thread.currentThread().getName()+ " start ");
-		Laboratory[] factories = new Laboratory[ConstValues.COUNT_OF_FACTORIES];
-		for (int i = 0; i < ConstValues.COUNT_OF_FACTORIES; i++) {
-			factories[i] = new Laboratory(ConstValues.FACTORY_NAME + (i + 1));
-		}
+		List<Laboratory> laboratories = new ArrayList<>();
+
+		IntStream.range(0, ConstValues.COUNT_OF_LABORATORIES)
+				.forEach(i -> laboratories
+						.add(new Laboratory(ConstValues.LABORATORY_NAME + (i + 1))));
+
 
 		JunkYard junkYardThr = JunkYard.getInstance();
-		junkYardThr.addFactories(factories);
+		junkYardThr.addLaboratories(laboratories);
 
 		junkYardThr.start();
 		junkYardThr.join();
 
+		checkAndPrintResults(laboratories);
+		//System.out.println(Thread.currentThread().getName()+ " finish ");
+	}
+
+	private static void checkAndPrintResults(List<Laboratory> laboratories) {
+
 		FactoryPrinter output = (o) -> System.out.println(o.getFactoryName() + " - " + o.getCountRobots());
 
-		if (junkYardThr.getFactoryOnPos(0).getCountRobots() != junkYardThr.getFactoryOnPos(factories.length - 1).getCountRobots()) {
-			boolean isFirstWinner = true;
-			boolean isFirstLooser = true;
-			for (int i = 0; i < factories.length; i++) {
-				if (isFirstWinner) {
-					System.out.print("Winner(s): ");
-					isFirstWinner = false;
-				}
-				if (junkYardThr.getFactoryOnPos(i).getCountRobots() == junkYardThr.getFactoryOnPos(0).getCountRobots()) {
-					output.printResult(junkYardThr.getFactoryOnPos(i));
-				} else {
-					if (isFirstLooser) {
-						System.out.println();
-						System.out.print("Loser(s): ");
-						isFirstLooser = false;
-					}
-					output.printResult(junkYardThr.getFactoryOnPos(i));
-				}
-			}
+		int maxCountRobots = laboratories.stream()
+				.max(Laboratory::compareTo).get().getCountRobots();
+
+		if (maxCountRobots == 0) {
+			System.out.print("GameDraw. All are losers: ");
+			laboratories.forEach(output::printResult);
+
 		} else {
-			System.out.print("GameDraw. All are loosers: ");
-			for (int i = 0; i < factories.length; i++) {
-				output.printResult(junkYardThr.getFactoryOnPos(i));
+			List<Laboratory> winners = laboratories.stream()
+					.filter(lab -> lab.getCountRobots() == maxCountRobots)
+					.collect(Collectors.toList());
+
+			if (winners.size() == laboratories.size()) {
+				System.out.print("GameDraw. All are winners: ");
+				laboratories.forEach(output::printResult);
+
+			} else {
+				System.out.println("Winner(s): ");
+				winners.forEach(output::printResult);
+				System.out.println();
+
+				System.out.println("Loser(s): ");
+				laboratories.removeAll(winners);
+				laboratories.forEach(output::printResult);
 			}
 		}
-		//System.out.println(Thread.currentThread().getName()+ " finish ");
 	}
 }
 

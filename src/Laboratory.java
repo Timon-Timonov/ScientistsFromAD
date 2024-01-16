@@ -30,23 +30,19 @@ public class Laboratory implements Comparable<Laboratory> {
 		this.countRobots = countRobots;
 	}
 
-	public List<Component> getStock() {
-		List<Component> temp = null;
-		synchronized (this.stock) {
-			temp = new ArrayList<>(stock);
-			stock.clear();
-		}
+	public synchronized List<Component> getStock() {
+		List<Component> temp = new ArrayList<>(stock);
+		stock.clear();
 		return temp;
 	}
 
-	public void putComponents(List<Component> components) {
-		synchronized (this.stock) {
-			this.stock.addAll(components);
-		}
+	public synchronized void putComponents(List<Component> components) {
+		this.stock.addAll(components);
+
 	}
 
 	@Override
 	public int compareTo(Laboratory o) {
-		return o.countRobots.compareTo(this.countRobots);
+		return this.countRobots.compareTo(o.countRobots);
 	}
 }

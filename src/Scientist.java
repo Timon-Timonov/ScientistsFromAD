@@ -22,7 +22,7 @@ public class Scientist extends Thread {
 		while (junkYardThr.getState() != State.TERMINATED) {
 
 			try {
-				Thread.sleep(ConstValues.DAY_TIME_SWAP_TIME );
+				Thread.sleep(ConstValues.DAY_TIME_SWAP_TIME);
 			} catch (InterruptedException e) {
 				throw new RuntimeException(e);
 			}
