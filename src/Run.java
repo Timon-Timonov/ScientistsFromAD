@@ -44,7 +44,4 @@ public class Run {
 	}
 }
 
-@FunctionalInterface
-interface FactoryPrinter {
-	void printResult(Laboratory laboratory);
-}
+
