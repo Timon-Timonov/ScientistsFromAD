@@ -5,6 +5,7 @@ import Utils.LaboratoryPrinter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Run {
@@ -33,17 +34,18 @@ public class Run {
 		LaboratoryPrinter output = (o) -> System.out.println(o.getLaboratoryName() + " - " + o.getCountRobots());
 
 		int maxCountRobots = laboratories.stream()
-				.max(Laboratory::compareTo).get().getCountRobots();
+				.map(Laboratory::getCountRobots)
+				.max(Integer::compareTo)
+				.orElse(0);
 
-		//int maxCountRobots1 = laboratories.stream().map(Classes.Laboratory::getCountRobots)
-		//		.max(Integer::compareTo).orElse(-1);
+
 
 		if (maxCountRobots == 0) {
 			System.out.print("GameDraw. All are losers: ");
 		} else {
 			List<Laboratory> winners = laboratories.stream()
 					.filter(lab -> lab.getCountRobots() == maxCountRobots)
-					.toList();
+					.collect(Collectors.toList());
 			if (winners.size() == laboratories.size()) {
 				System.out.println("GameDraw. All are winners: ");
 			} else {

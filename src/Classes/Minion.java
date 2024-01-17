@@ -41,7 +41,7 @@ public class Minion extends Thread {
 								}
 							} else break;
 						}
-						//System.out.println(Thread.currentThread().getName() + " night " + currentNight + " take from dump " + backpack.size());
+						System.out.println(Thread.currentThread().getName() + " night " + currentNight + " take from dump " + backpack.size());
 						nightWorkIsExecute = true;
 					}
 				} else {
@@ -53,7 +53,7 @@ public class Minion extends Thread {
 			}
 		}
 		putComponentsToLab();
-		System.out.println(Thread.currentThread().getName() + " finish.");
+		//System.out.println(Thread.currentThread().getName() + " finish.");
 	}
 
 	private void putComponentsToLab() {

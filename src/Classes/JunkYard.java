@@ -35,7 +35,7 @@ public class JunkYard extends Thread {
 		}
 
 		for (int i = 0; i < ConstValues.COUNT_DAYS; i++) {
-			//System.out.println(Thread.currentThread().getName() + " night " + (i + 1) + " count of parts:" + components.size());
+			System.out.println(Thread.currentThread().getName() + " night " + (i + 1) + " count of parts:" + components.size());
 			openState = true;
 			toSleep();//За это время должны успеть прибежать слуги
 			openState = false;

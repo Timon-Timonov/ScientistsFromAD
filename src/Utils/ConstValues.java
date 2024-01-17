@@ -7,7 +7,7 @@ public class ConstValues {
 	public static final Random RANDOM = new Random();
 
 	public static final int COUNT_OF_LABORATORIES = 2;
-	public static final String LABORATORY_NAME = "Classes.Laboratory";
+	public static final String LABORATORY_NAME = "Laboratory";
 	public static final String DUMP_NAME = "Dump";
 	public final static long DAY_TIME_SWAP_TIME = 100;
 	public final static int COUNT_DAYS = 100;
